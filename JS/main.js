@@ -2,17 +2,22 @@
 const canvas = document.getElementById("Begin");
 const ctx = canvas.getContext("2d");
 
-// Colony Creation
-const ant1 = {x:50, y:70, angle:Math.random() * (2 * Math.PI)};
-const ant2 = {x:10, y:20, angle:Math.random() * (2 * Math.PI)};
-const colony = [ant1, ant2]
-
-// Debugging purposes - to see the ants properties:
-colony.forEach(function(ant)
+// Creates the colony
+function createAnt()
 {
-    console.log(ant.x,ant.y,ant.angle)
-});
+    return {x:Math.floor(Math.random() * 800) + 1 , y:Math.floor(Math.random() * 600) + 1 , angle:Math.random() * (2 * Math.PI)};
+};
 
+const antCount = 100 // Change this to change the base amount of ants spawned
+const colony = []
+for(let i = 0; i < antCount; i++) 
+{
+    colony.push(createAnt())
+}
+
+
+
+// Main Body //
 function loop()
 {
     // Fills the background to a solid colour
@@ -38,6 +43,7 @@ function loop()
 
     // Call back unto itself to have an infinite loop
     requestAnimationFrame(loop);
-}
+};
 
+// Begin loop
 requestAnimationFrame(loop);
