@@ -4,6 +4,7 @@ const ctx = canvas.getContext("2d");
 
 
 
+
 // Pheromones System //
 const cellSize = 5;
 const cols = Math.floor(canvas.width / cellSize);
@@ -24,13 +25,14 @@ function getIndex(x, y)
 // Our cute ant:
 const img = new Image();
 img.src = 'img/ant.png';
+const turnStrength = 0.1;
 
 const colony = [];
 const corpses = [];
 
 function antCreationContainer()
 {
-    return {x:Math.floor(Math.random() * 800) + 1 , y:Math.floor(Math.random() * 600) + 1 , angle:Math.random() * (2 * Math.PI), size:10, speed:0.5};
+    return {x:Math.floor(Math.random() * 800) + 1 , y:Math.floor(Math.random() * 600) + 1 , angle:Math.random() * (2 * Math.PI), size:10, speed:0.5, sensorDist:20, sensorFOV:Math.PI / 4};
 }
 
 function antCreate()

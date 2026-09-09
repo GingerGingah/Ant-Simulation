@@ -31,10 +31,25 @@ function loop()
         ctx.drawImage(img, -ant.size / 2, -ant.size / 2, ant.size, ant.size);
         ctx.restore();   
 
-        
+        // Calculate future movements
         let tempX = ant.x + Math.cos(ant.angle) * ant.speed;
         let tempY = ant.y + Math.sin(ant.angle) * ant.speed;
+
+        // Calculate pheromones ahead of them
+        let aheadX = ant.x + Math.cos(ant.angle) * ant.sensorDist;
+        let aheadY = ant.y + Math.sin(ant.angle) * ant.sensorDist;
+        let senseAhead = pheroHome[getIndex(aheadX, aheadY)];
         
+        let leftX = ant.x + Math.cos(ant.angle - ant.sensorFOV) * ant.sensorDist;
+        let leftY = ant.y + Math.sin(ant.angle - ant.sensorFOV) * ant.sensorDist;
+        let senseLeft = pheroHome[getIndex(leftX, leftY)];
+        
+        let rightX = ant.x + Math.cos(ant.angle + ant.sensorFOV) * ant.sensorDist;
+        let rightY = ant.y + Math.sin(ant.angle + ant.sensorFOV) * ant.sensorDist;
+        let senseRight = pheroHome[getIndex(rightX, rightY)];
+
+
+        // Calculate the angle of the ant - Where it's facing
         ant.angle += ( Math.random() - 0.5 ) * 0.5
 
         
@@ -76,19 +91,33 @@ function loop()
 
         // Depositing pheroHome
         pheroHome[getIndex(ant.x,ant.y)] += 0.1
+
+        if (senseLeft > senseAhead && senseLeft > senseRight)
+        {
+            ant.angle -= turnStrength
+        }
+        else if (senseRight > senseAhead && senseRight > senseLeft)
+        {
+            ant.angle += turnStrength
+        }
     });
 
-    // Pheromones
+    // Pheromones draw & decay
     pheroHome.forEach(function(value, index) {
         let row = Math.floor(index / cols);
         let col = index % cols;
 
+        ctx.save()
         ctx.fillStyle="black";
         if (value > 0)
         {
+            ctx.globalAlpha = value
             ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize)
         }
+        ctx.restore()
+
         
+        pheroHome[index] *= 0.98
     });
 
 
