@@ -30,34 +30,46 @@ function loop()
         ctx.arc(ant.x, ant.y, ant.size, 0, 2 * Math.PI);
         ctx.fill();
 
-        // Ants go in a straight line towards a random angle they're pointed in at a speed of 0.5 which is changed every frame
-        ant.x += Math.cos(ant.angle) * 0.5
-        ant.y += Math.sin(ant.angle) * 0.5
+        
+        let tempX = ant.x + Math.cos(ant.angle) * 0.5;
+        let tempY = ant.y + Math.sin(ant.angle) * 0.5;
+        
         ant.angle += ( Math.random() - 0.5 ) * 0.5
 
         // Clamping to the edges so the bodies of the ants cannot go past
-        if (ant.x > canvas.width)
+        // Ants go in a straight line towards a random angle they're pointed in at a speed of 0.5 which is changed every frame
+        if (tempX > canvas.width)
         {
             ant.angle = Math.PI - ant.angle;
             ant.x = canvas.width - ant.size;
         }
 
-        if (ant.x < 0)
+        else if (tempX < 0)
         {
             ant.angle = Math.PI - ant.angle;
             ant.x = ant.size;
         }
 
-        if (ant.y > canvas.height)
+        else
+        {
+            ant.x = tempX
+        }
+
+        if (tempY > canvas.height)
         {
             ant.angle = -ant.angle;
             ant.y = canvas.height - ant.size;
         }
 
-        if (ant.y < 0)
+        else if (tempY < 0)
         {
             ant.angle = -ant.angle;
             ant.y = ant.size;
+        }
+
+        else
+        {
+            ant.y = tempY
         }
     });
 
