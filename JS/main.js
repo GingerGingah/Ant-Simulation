@@ -73,10 +73,25 @@ function loop()
         {
             ant.y = tempY
         }
+
+        // Depositing pheroHome
+        pheroHome[getIndex(ant.x,ant.y)] += 0.1
+    });
+
+    // Pheromones
+    pheroHome.forEach(function(value, index) {
+        let row = Math.floor(index / cols);
+        let col = index % cols;
+
+        ctx.fillStyle="black";
+        if (value > 0)
+        {
+            ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize)
+        }
+        
     });
 
 
-    
     // Call back unto itself to have an infinite loop
     requestAnimationFrame(loop);
 }

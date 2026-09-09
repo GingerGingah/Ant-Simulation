@@ -3,15 +3,31 @@ const canvas = document.getElementById("Begin");
 const ctx = canvas.getContext("2d");
 
 
-// Vars //
-const colony = [];
-const corpses = [];
+
+// Pheromones System //
+const cellSize = 5;
+const cols = Math.floor(canvas.width / cellSize);
+const rows = Math.floor(canvas.height / cellSize);
+
+const pheroHome = new Array(cols * rows).fill(0);
+
+function getIndex(x, y)
+{
+    let c = Math.floor(x / cellSize); // columns
+    let r = Math.floor(y / cellSize); // rows
+    return r * cols + c
+}
+
+
+
+// Ant Creation & Deletion Method //
 // Our cute ant:
 const img = new Image();
 img.src = 'img/ant.png';
 
+const colony = [];
+const corpses = [];
 
-// Ant Creation & Deletion Method //
 function antCreationContainer()
 {
     return {x:Math.floor(Math.random() * 800) + 1 , y:Math.floor(Math.random() * 600) + 1 , angle:Math.random() * (2 * Math.PI), size:10, speed:0.5};
