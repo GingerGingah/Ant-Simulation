@@ -36,16 +36,6 @@ function loop()
         ant.angle += ( Math.random() - 0.5 ) * 0.5
 
         // Clamping to the edges so the bodies of the ants cannot go past
-        if (ant.x > canvas.width || ant.x < 0)
-        {
-            ant.angle = Math.PI - ant.angle;
-        }
-
-        if (ant.y > canvas.height || ant.y < 0)
-        {
-            ant.angle = -ant.angle;
-        }
-
         if (ant.x > canvas.width)
         {
             ant.angle = Math.PI - ant.angle;
