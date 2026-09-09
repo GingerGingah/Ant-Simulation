@@ -5,7 +5,7 @@ const ctx = canvas.getContext("2d");
 // Creates the colony //
 function createAnt()
 {
-    return {x:Math.floor(Math.random() * 800) + 1 , y:Math.floor(Math.random() * 600) + 1 , angle:Math.random() * (2 * Math.PI), size:5};
+    return {x:Math.floor(Math.random() * 800) + 1 , y:Math.floor(Math.random() * 600) + 1 , angle:Math.random() * (2 * Math.PI), size:5, speed:0.5};
 }
 
 const antCount = 100; // Change this to change the base amount of ants spawned
@@ -25,14 +25,14 @@ function loop()
 
     // Display an ant for each one in the colony
     colony.forEach(function(ant) {
-        ctx.fillStyle ="Brown";
+        ctx.fillStyle ="#71220e";
         ctx.beginPath();
         ctx.arc(ant.x, ant.y, ant.size, 0, 2 * Math.PI);
         ctx.fill();
 
         
-        let tempX = ant.x + Math.cos(ant.angle) * 0.5;
-        let tempY = ant.y + Math.sin(ant.angle) * 0.5;
+        let tempX = ant.x + Math.cos(ant.angle) * ant.speed;
+        let tempY = ant.y + Math.sin(ant.angle) * ant.speed;
         
         ant.angle += ( Math.random() - 0.5 ) * 0.5
 
