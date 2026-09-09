@@ -1,10 +1,8 @@
 // Main Body //
 function loop()
 {
-
-    // Fills the background to a solid colour
-    ctx.fillStyle ="Green";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Background image
+    ctx.drawImage(bgImg, 0, 0, 800, 600)
 
     // Corpse stays on screen for a short while
     for (let i = corpses.length - 1; i >= 0; i--) {
@@ -28,7 +26,7 @@ function loop()
         ctx.save();
         ctx.translate(ant.x, ant.y);
         ctx.rotate(ant.angle + Math.PI / 2);   
-        ctx.drawImage(img, -ant.size / 2, -ant.size / 2, ant.size, ant.size);
+        ctx.drawImage(antImg, -ant.size / 2, -ant.size / 2, ant.size, ant.size);
         ctx.restore();   
 
         // Calculate future movements

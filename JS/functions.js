@@ -2,7 +2,9 @@
 const canvas = document.getElementById("Begin");
 const ctx = canvas.getContext("2d");
 
-
+// BG
+const bgImg = new Image();
+bgImg.src = "img/background.png";
 
 
 // Pheromones System //
@@ -22,11 +24,11 @@ function getIndex(x, y)
 
 
 // Ant Creation & Deletion Method //
-// Our cute ant:
-const img = new Image();
-img.src = 'img/ant.png';
-const turnStrength = 0.1;
+// Our cute ant art:
+const antImg = new Image();
+antImg.src = 'img/ant.png';
 
+const turnStrength = 0.1;
 const colony = [];
 const corpses = [];
 
