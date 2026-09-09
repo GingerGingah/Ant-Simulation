@@ -72,3 +72,21 @@ deleteAntButton.addEventListener("click", function()
 
         console.log("Ant Deleted! Ant Count: " + colony.length)
     });
+
+const addManyAntButton=document.getElementById("addManyAntBtn");
+addManyAntButton.addEventListener("click", function()
+    {
+        for (let i = 0; i < 100; i++)
+        {
+            antCreate();
+            console.log("Ant Added! Ant Count: " + colony.length)
+        }
+    });
+
+const clearAntButton=document.getElementById("clearAntBtn");
+clearAntButton.addEventListener("click", function()
+    {
+        colony.length = 0
+        console.clear()
+        console.log("Ants Cleared!")
+    });
