@@ -7,19 +7,46 @@ const bgImg = new Image();
 bgImg.src = "img/background.png";
 
 
+// Nest System //
+const antNest = {x:canvas.width/2, y:canvas.height/2, size:30, foodStore:0}
+
+
 // Pheromones System //
 const cellSize = 5;
 const cols = Math.floor(canvas.width / cellSize);
 const rows = Math.floor(canvas.height / cellSize);
 
 const pheroHome = new Array(cols * rows).fill(0);
+const pheroFood = new Array(cols * rows).fill(0);
 
 function getIndex(x, y)
 {
     let c = Math.floor(x / cellSize); // columns
     let r = Math.floor(y / cellSize); // rows
-    return r * cols + c
+    let clampedC = Math.max(0, Math.min(c, cols - 1));
+    let clampedR = Math.max(0, Math.min(r, rows - 1));
+    return clampedR * cols + clampedC;
 }
+
+
+// Food system //
+const foodSpawned = [];
+
+function appleSpawnContainer()
+{
+    return {x:Math.floor(Math.random() * 800) + 1 , y:Math.floor(Math.random() * 600) + 1 , size:20, amount:500}
+}
+function appleSpawn()
+{
+    foodSpawned.push(appleSpawnContainer())
+}
+const appleSpawnBtn=document.getElementById("appleSpawnBtn");
+appleSpawnBtn.addEventListener("click", function()
+    {
+        appleSpawn()
+        console.log("Apple Spawned!")
+        console.log(foodSpawned)
+    });
 
 
 
@@ -34,7 +61,7 @@ const corpses = [];
 
 function antCreationContainer()
 {
-    return {x:Math.floor(Math.random() * 800) + 1 , y:Math.floor(Math.random() * 600) + 1 , angle:Math.random() * (2 * Math.PI), size:10, speed:0.5, sensorDist:20, sensorFOV:Math.PI / 4};
+    return {x:antNest.x, y:antNest.y, angle:Math.random() * (2 * Math.PI), size:10, speed:0.5, sensorDist:20, sensorFOV:Math.PI / 4, hasFood:false};
 }
 
 function antCreate()
@@ -86,6 +113,10 @@ addManyAntButton.addEventListener("click", function()
 const clearAntButton=document.getElementById("clearAntBtn");
 clearAntButton.addEventListener("click", function()
     {
+        colony.forEach(function(){
+            const dead = antDelete();
+            antDeath(dead);
+        });
         colony.length = 0
         console.clear()
         console.log("Ants Cleared!")
