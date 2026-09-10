@@ -121,6 +121,7 @@ function loop()
                     {
                         ant.hasFood = true;
                         food.amount -= 1;
+                        console.log(`Ant grabbed a piece of food at ${food.x}, ${food.y}. Total left: ${food.amount}`)
                         ant.angle += Math.PI;
                     }
             }
@@ -136,7 +137,7 @@ function loop()
                         ant.hasFood = false;
                         antNest.foodStore += 1
                         ant.angle += Math.PI;
-                        console.log(antNest.foodStore)
+                        console.log(`Ant deposited food, total food in nest: ${antNest.foodStore}`)
                     }
             }
     });

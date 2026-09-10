@@ -106,8 +106,8 @@ addManyAntButton.addEventListener("click", function()
         for (let i = 0; i < 100; i++)
         {
             antCreate();
-            console.log("Ant Added! Ant Count: " + colony.length)
         }
+        console.log("Ants Added! Ant Count: " + colony.length)
     });
 
 const clearAntButton=document.getElementById("clearAntBtn");
