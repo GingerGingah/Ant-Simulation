@@ -106,17 +106,29 @@ function loop()
         }
 
         // Follow pheromones
-        const steerStrength = 0.03;
         ant.angle += (senseRight - senseLeft) * steerStrength;
 
+        // Pull to Nest when hasFood === true
+        
+        if (ant.hasFood === true)
+        {
+            let dx = antNest.x - ant.x;        // horizontal gap
+            let dy = antNest.y - ant.y;        // vertical gap
+            let targetAngle = Math.atan2(dy, dx);
+
+            let angleDiff = targetAngle - ant.angle;
+            angleDiff = Math.atan2(Math.sin(angleDiff), Math.cos(angleDiff));
+
+            ant.angle += angleDiff * homeStrength
+        }
         
         // Food System - Check to hold food and bring back to colony //
         foodSpawned.forEach(function(food){
             if (ant.hasFood === false)
             {
-                let dx = food.x - ant.x        // horizontal gap
-                let dy = food.y - ant.y        // vertical gap
-                let distance = Math.sqrt(dx * dx + dy * dy)
+                let dx = food.x - ant.x;        // horizontal gap
+                let dy = food.y - ant.y;        // vertical gap
+                let distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance < food.size / 2 + ant.size / 2)
                     {
                         ant.hasFood = true;
@@ -129,9 +141,9 @@ function loop()
     
         if (ant.hasFood === true)
             {
-                let dx = antNest.x - ant.x        // horizontal gap
-                let dy = antNest.y - ant.y        // vertical gap
-                let distance = Math.sqrt(dx * dx + dy * dy)
+                let dx = antNest.x - ant.x;        // horizontal gap
+                let dy = antNest.y - ant.y;        // vertical gap
+                let distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance < antNest.size / 2 + ant.size / 2)
                     {
                         ant.hasFood = false;
@@ -148,17 +160,17 @@ function loop()
         let col = index % cols;
 
         // Comment this if you want to hide/unhide the pheromones being drawn
-        // ctx.save()
-        // ctx.fillStyle="black";
-        // if (value > 0)
-        // {
-        //     ctx.globalAlpha = value
-        //     ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize)
-        // }
-        // ctx.restore()
+        ctx.save()
+        ctx.fillStyle="black";
+        if (value > 0)
+        {
+            ctx.globalAlpha = value
+            ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize)
+        }
+        ctx.restore()
         ////
         
-        pheroHome[index] *= 0.99
+        pheroHome[index] *= 0.995
     });
 
     pheroFood.forEach(function(value, index) {
@@ -166,17 +178,17 @@ function loop()
         let col = index % cols;
 
         // Comment this if you want to hide/unhide the pheromones being drawn
-        // ctx.save()
-        // ctx.fillStyle="orange";
-        // if (value > 0)
-        // {
-        //     ctx.globalAlpha = value
-        //     ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize)
-        // }
-        // ctx.restore()
+        ctx.save()
+        ctx.fillStyle="orange";
+        if (value > 0)
+        {
+            ctx.globalAlpha = value
+            ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize)
+        }
+        ctx.restore()
         // ////
         
-        // pheroFood[index] *= 0.998
+        pheroFood[index] *= 0.998
     });
     ////
 

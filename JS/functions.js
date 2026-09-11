@@ -55,9 +55,11 @@ appleSpawnBtn.addEventListener("click", function()
 const antImg = new Image();
 antImg.src = 'img/ant.png';
 
-const turnStrength = 0.1;
+// const turnStrength = 0.1;
 const colony = [];
 const corpses = [];
+const homeStrength = 0.02;
+const steerStrength = 0.03;
 
 function antCreationContainer()
 {
