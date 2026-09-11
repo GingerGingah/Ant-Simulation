@@ -7,8 +7,34 @@ body
     display: flex;
     flex-direction: column;
     align-items: center;
+}
 
-    background-color: #626d71;
+.background-image {
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    background-image: url('../img/CartoonSky.png');
+    align-items: center;
+    min-height: 100vh;
+    min-width: 200vh;
+    background-size: cover;
+    background-position: center;
+    width: 1200px;
+    height: 800px;
+    -webkit-filter: blur(16px);
+    -moz-filter: blur(16px);
+    -o-filter: blur(16px);
+    -ms-filter: blur(16px);
+    filter: blur(16px);
+}
+
+.content {
+    position: center;
+    z-index: 9999;
 }
 
 #Title 
