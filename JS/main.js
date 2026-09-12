@@ -37,11 +37,6 @@ function loop()
         // Calculate future movements
         let tempX = ant.x + Math.cos(ant.angle) * ant.speed;
         let tempY = ant.y + Math.sin(ant.angle) * ant.speed;
-
-
-        // Calculate the angle of the ant - Where it's facing
-        ant.angle += ( Math.random() - 0.5 ) * 0.5
-
         
         // Clamping to the edges so the bodies of the ants cannot go past
         // Ants go in a straight line towards a random angle they're pointed in at a speed of 0.5 which is changed every frame
@@ -79,8 +74,10 @@ function loop()
             ant.y = tempY
         }
 
+        
         // Pheromone System //
         let senseGrid = (ant.hasFood === true) ? pheroHome : pheroFood; // Decides between following pheroHome or pheroFood
+        let foodStrength = Math.max(0, 1 - (ant.tripTicks / gradientRange))
 
         // Calculate pheromones ahead of them
         let aheadX = ant.x + Math.cos(ant.angle) * ant.sensorDist;
@@ -95,6 +92,14 @@ function loop()
         let rightY = ant.y + Math.sin(ant.angle + ant.sensorFOV) * ant.sensorDist;
         let senseRight = senseGrid[getIndex(rightX, rightY)];
 
+        let signalStrength = senseAhead + senseLeft + senseRight;
+
+        let wanderAmount = 0.5 / (1 + signalStrength * 2);
+
+
+        // Calculate the angle of the ant - Where it's facing
+        ant.angle += (Math.random() - 0.5) * wanderAmount;
+
         // Deposit specific pheromones
         if (ant.hasFood === false)
         {
@@ -102,14 +107,14 @@ function loop()
         }
         else if (ant.hasFood === true)
         {
-            pheroFood[getIndex(ant.x,ant.y)] += 0.1;
+            pheroFood[getIndex(ant.x,ant.y)] += 0.1 * foodStrength;
         }
 
         // Follow pheromones
         ant.angle += (senseRight - senseLeft) * steerStrength;
 
+
         // Pull to Nest when hasFood === true
-        
         if (ant.hasFood === true)
         {
             let dx = antNest.x - ant.x;        // horizontal gap
@@ -132,6 +137,7 @@ function loop()
                 if (distance < food.size / 2 + ant.size / 2)
                     {
                         ant.hasFood = true;
+                        ant.tripTicks = 0
                         food.amount -= 1;
                         console.log(`Ant grabbed a piece of food at ${food.x}, ${food.y}. Total left: ${food.amount}`)
                         ant.angle += Math.PI;
@@ -141,6 +147,7 @@ function loop()
     
         if (ant.hasFood === true)
             {
+                ant.tripTicks += ant.speed
                 let dx = antNest.x - ant.x;        // horizontal gap
                 let dy = antNest.y - ant.y;        // vertical gap
                 let distance = Math.sqrt(dx * dx + dy * dy);

@@ -59,11 +59,12 @@ antImg.src = 'img/ant.png';
 const colony = [];
 const corpses = [];
 const homeStrength = 0.02;
-const steerStrength = 0.03;
+const steerStrength = 0.05;
+const gradientRange = 500;
 
 function antCreationContainer()
 {
-    return {x:antNest.x, y:antNest.y, angle:Math.random() * (2 * Math.PI), size:10, speed:0.5, sensorDist:20, sensorFOV:Math.PI / 4, hasFood:false};
+    return {x:antNest.x, y:antNest.y, angle:Math.random() * (2 * Math.PI), size:10, speed:0.5, sensorDist:20, sensorFOV:Math.PI / 4, hasFood:false, tripTicks:0};
 }
 
 function antCreate()
