@@ -180,34 +180,40 @@ function loop()
     {
         let row = Math.floor(index / cols);
         let col = index % cols;
-
-        // ctx.save();
-        // ctx.fillStyle = "black";
-        // if (value > 0)
-        // {
-        //     ctx.globalAlpha = value;
-        //     ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
-        // }
-        // ctx.restore();
-
-        pheroHome[index] *= 0.98;
+    
+        if (showPheromones)
+        {
+            ctx.save();
+            ctx.fillStyle = "black";
+            if (value > 0)
+            {
+                ctx.globalAlpha = value;
+                ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+            }
+            ctx.restore();
+        }
+    
+        pheroHome[index] *= 0.99;
     });
-
+    
     pheroFood.forEach(function (value, index)
     {
         let row = Math.floor(index / cols);
         let col = index % cols;
-
-        // ctx.save();
-        // ctx.fillStyle = "orange";
-        // if (value > 0)
-        // {
-        //     ctx.globalAlpha = value;
-        //     ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
-        // }
-        // ctx.restore();
-
-        pheroFood[index] *= 0.995;
+    
+        if (showPheromones)
+        {
+            ctx.save();
+            ctx.fillStyle = "orange";
+            if (value > 0)
+            {
+                ctx.globalAlpha = value;
+                ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+            }
+            ctx.restore();
+        }
+    
+        pheroFood[index] *= 0.9997;
     });
 
     // Food System - Drawing, shrinking, and removal //

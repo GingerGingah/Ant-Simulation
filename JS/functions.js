@@ -131,8 +131,7 @@ addManyAntButton.addEventListener("click", function ()
     console.log("Ants Added! Ant Count: " + colony.length);
 });
 
-// Clear Ants Button — rewritten as a while loop so it doesn't skip ants
-// while mutating the array mid-iteration (the old forEach version did)
+// Clear Ants Button
 const clearAntButton = document.getElementById("clearAntBtn");
 clearAntButton.addEventListener("click", function ()
 {
@@ -143,4 +142,13 @@ clearAntButton.addEventListener("click", function ()
     }
     console.clear();
     console.log("Ants Cleared!");
+});
+
+let showPheromones = false;
+
+const togglePheroButton = document.getElementById("togglePheroBtn");
+togglePheroButton.addEventListener("click", function ()
+{
+    showPheromones = !showPheromones;
+    console.log("Pheromones visible: " + showPheromones);
 });
