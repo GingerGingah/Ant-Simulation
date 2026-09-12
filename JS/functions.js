@@ -66,8 +66,10 @@ const corpses = [];
 const homeStrength = 0.02;
 const steerStrength = 0.05;
 const gradientRange = 500;
-const wanderRange = 400;
 const wanderHomeStrength = 0.005;
+let foodEverFound = false;
+const wanderRangeUnfound = 700;  // no food found yet — explore freely, wander far
+const wanderRangeFound = 250;    // food already found — stay closer to known territory
 
 function antCreationContainer()
 {

@@ -74,7 +74,9 @@ function loop()
         // Pheromone System //
         let senseGrid = (ant.hasFood === true) ? pheroHome : pheroFood;
         let foodStrength = Math.max(0, 1 - (ant.tripTicks / gradientRange));
-        let tooFarWander = Math.min(1, ant.wanderTicks / wanderRange);
+
+        let currentWanderRange = (foodEverFound) ? wanderRangeFound : wanderRangeUnfound;
+        let tooFarWander = Math.min(1, ant.wanderTicks / currentWanderRange);
 
         // Calculate pheromones ahead of them
         let aheadX = ant.x + Math.cos(ant.angle) * ant.sensorDist;
@@ -160,14 +162,15 @@ function loop()
                 let dy = food.y - ant.y;
                 let distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance < food.size / 2 + ant.size / 2 && food.amount > 0)
-                {
-                    ant.hasFood = true;
-                    ant.tripTicks = 0;
-                    ant.wanderTicks = 0;
-                    food.amount -= 1;
-                    console.log(`Ant grabbed a piece of food at ${food.x}, ${food.y}. Total left: ${food.amount}`);
-                    ant.angle += Math.PI;
-                }
+                    {
+                        ant.hasFood = true;
+                        ant.tripTicks = 0;
+                        ant.wanderTicks = 0;
+                        food.amount -= 1;
+                        foodEverFound = true;
+                        console.log(`Ant grabbed a piece of food at ${food.x}, ${food.y}. Total left: ${food.amount}`);
+                        ant.angle += Math.PI;
+                    }
             }
         });
     });
@@ -204,7 +207,7 @@ function loop()
         // }
         // ctx.restore();
 
-        pheroFood[index] *= 0.993;
+        pheroFood[index] *= 0.995;
     });
 
     // Food System - Drawing, shrinking, and removal //
