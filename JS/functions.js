@@ -8,7 +8,7 @@ bgImg.src = "img/background.png";
 
 
 // Nest System //
-const antNest = {x:canvas.width/2, y:canvas.height/2, size:30, foodStore:0}
+const antNest = { x: canvas.width / 2, y: canvas.height / 2, size: 30, foodStore: 0 };
 
 
 // Pheromones System //
@@ -34,20 +34,26 @@ const foodSpawned = [];
 
 function appleSpawnContainer()
 {
-    return {x:Math.floor(Math.random() * 800) + 1 , y:Math.floor(Math.random() * 600) + 1 , size:20, amount:500}
+    const startingAmount = 500;
+    return {
+        x: Math.floor(Math.random() * 800) + 1,
+        y: Math.floor(Math.random() * 600) + 1,
+        size: 20,
+        amount: startingAmount,
+        amountMax: startingAmount
+    };
 }
 function appleSpawn()
 {
-    foodSpawned.push(appleSpawnContainer())
+    foodSpawned.push(appleSpawnContainer());
 }
-const appleSpawnBtn=document.getElementById("appleSpawnBtn");
-appleSpawnBtn.addEventListener("click", function()
-    {
-        appleSpawn()
-        console.log("Apple Spawned!")
-        console.log(foodSpawned)
-    });
-
+const appleSpawnBtn = document.getElementById("appleSpawnBtn");
+appleSpawnBtn.addEventListener("click", function ()
+{
+    appleSpawn();
+    console.log("Apple Spawned!");
+    console.log(foodSpawned);
+});
 
 
 // Ant Creation & Deletion Method //
@@ -55,7 +61,6 @@ appleSpawnBtn.addEventListener("click", function()
 const antImg = new Image();
 antImg.src = 'img/ant.png';
 
-// const turnStrength = 0.1;
 const colony = [];
 const corpses = [];
 const homeStrength = 0.02;
@@ -66,63 +71,74 @@ const wanderHomeStrength = 0.005;
 
 function antCreationContainer()
 {
-    return {x:antNest.x, y:antNest.y, angle:Math.random() * (2 * Math.PI), size:10, speed:0.5, sensorDist:20, sensorFOV:Math.PI / 4, hasFood:false, tripTicks:0, wanderTicks:0};
+    return {
+        x: antNest.x,
+        y: antNest.y,
+        angle: Math.random() * (2 * Math.PI),
+        size: 10,
+        speed: 0.5,
+        sensorDist: 20,
+        sensorFOV: Math.PI / 4,
+        hasFood: false,
+        tripTicks: 0,
+        wanderTicks: 0
+    };
 }
 
 function antCreate()
 {
-    colony.push(antCreationContainer())
+    colony.push(antCreationContainer());
 }
 
 function antDelete()
 {
-    return colony.pop()
+    return colony.pop();
 }
 
-function antDeath(ant) 
+function antDeath(ant)
 {
     if (!ant) return;
-    corpses.push({ x: ant.x, y: ant.y, size: ant.size, life: 3});
-
+    corpses.push({ x: ant.x, y: ant.y, size: ant.size, life: 3 });
     console.log(`Ant died at (${ant.x}, ${ant.y})`);
 }
 
 // Create Ant Button
-const addAntButton=document.getElementById("addAntBtn");
-addAntButton.addEventListener("click", function()
-    {
-        antCreate();
-        console.log("Ant Added! Ant Count: " + colony.length)
-    });
+const addAntButton = document.getElementById("addAntBtn");
+addAntButton.addEventListener("click", function ()
+{
+    antCreate();
+    console.log("Ant Added! Ant Count: " + colony.length);
+});
 
 // Delete Ant Button
-const deleteAntButton=document.getElementById("deleteAntBtn");
-deleteAntButton.addEventListener("click", function()
+const deleteAntButton = document.getElementById("deleteAntBtn");
+deleteAntButton.addEventListener("click", function ()
+{
+    const dead = antDelete();
+    antDeath(dead);
+    console.log("Ant Deleted! Ant Count: " + colony.length);
+});
+
+const addManyAntButton = document.getElementById("addManyAntBtn");
+addManyAntButton.addEventListener("click", function ()
+{
+    for (let i = 0; i < 100; i++)
+    {
+        antCreate();
+    }
+    console.log("Ants Added! Ant Count: " + colony.length);
+});
+
+// Clear Ants Button — rewritten as a while loop so it doesn't skip ants
+// while mutating the array mid-iteration (the old forEach version did)
+const clearAntButton = document.getElementById("clearAntBtn");
+clearAntButton.addEventListener("click", function ()
+{
+    while (colony.length > 0)
     {
         const dead = antDelete();
         antDeath(dead);
-
-        console.log("Ant Deleted! Ant Count: " + colony.length)
-    });
-
-const addManyAntButton=document.getElementById("addManyAntBtn");
-addManyAntButton.addEventListener("click", function()
-    {
-        for (let i = 0; i < 100; i++)
-        {
-            antCreate();
-        }
-        console.log("Ants Added! Ant Count: " + colony.length)
-    });
-
-const clearAntButton=document.getElementById("clearAntBtn");
-clearAntButton.addEventListener("click", function()
-    {
-        colony.forEach(function(){
-            const dead = antDelete();
-            antDeath(dead);
-        });
-        colony.length = 0
-        console.clear()
-        console.log("Ants Cleared!")
-    });
+    }
+    console.clear();
+    console.log("Ants Cleared!");
+});
