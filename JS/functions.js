@@ -61,10 +61,12 @@ const corpses = [];
 const homeStrength = 0.02;
 const steerStrength = 0.05;
 const gradientRange = 500;
+const wanderRange = 400;
+const wanderHomeStrength = 0.005;
 
 function antCreationContainer()
 {
-    return {x:antNest.x, y:antNest.y, angle:Math.random() * (2 * Math.PI), size:10, speed:0.5, sensorDist:20, sensorFOV:Math.PI / 4, hasFood:false, tripTicks:0};
+    return {x:antNest.x, y:antNest.y, angle:Math.random() * (2 * Math.PI), size:10, speed:0.5, sensorDist:20, sensorFOV:Math.PI / 4, hasFood:false, tripTicks:0, wanderTicks:0};
 }
 
 function antCreate()

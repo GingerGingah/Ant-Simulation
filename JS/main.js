@@ -78,6 +78,7 @@ function loop()
         // Pheromone System //
         let senseGrid = (ant.hasFood === true) ? pheroHome : pheroFood; // Decides between following pheroHome or pheroFood
         let foodStrength = Math.max(0, 1 - (ant.tripTicks / gradientRange))
+        let tooFarWander = Math.min(1, ant.wanderTicks / wanderRange)
 
         // Calculate pheromones ahead of them
         let aheadX = ant.x + Math.cos(ant.angle) * ant.sensorDist;
@@ -94,7 +95,7 @@ function loop()
 
         let signalStrength = senseAhead + senseLeft + senseRight;
 
-        let wanderAmount = 0.5 / (1 + signalStrength * 2);
+        let wanderAmount = 0.5 / (1 + signalStrength * 3);
 
 
         // Calculate the angle of the ant - Where it's facing
@@ -126,6 +127,26 @@ function loop()
 
             ant.angle += angleDiff * homeStrength
         }
+        else
+        {
+            ant.wanderTicks += ant.speed
+
+            let dx = antNest.x - ant.x;        // horizontal gap
+            let dy = antNest.y - ant.y;        // vertical gap
+            let targetAngle = Math.atan2(dy, dx);
+
+            let angleDiff = targetAngle - ant.angle;
+            angleDiff = Math.atan2(Math.sin(angleDiff), Math.cos(angleDiff));
+
+            ant.angle += angleDiff * tooFarWander * wanderHomeStrength;
+
+            // Reset wanderTicks if the ant happens to wander back near the nest
+            let nestDistance = Math.sqrt(dx * dx + dy * dy);
+            if (nestDistance < antNest.size / 2 + ant.size / 2)
+            {
+                ant.wanderTicks = 0;
+            }
+        }
         
         // Food System - Check to hold food and bring back to colony //
         foodSpawned.forEach(function(food){
@@ -138,6 +159,7 @@ function loop()
                     {
                         ant.hasFood = true;
                         ant.tripTicks = 0
+                        ant.wanderTicks = 0
                         food.amount -= 1;
                         console.log(`Ant grabbed a piece of food at ${food.x}, ${food.y}. Total left: ${food.amount}`)
                         ant.angle += Math.PI;
